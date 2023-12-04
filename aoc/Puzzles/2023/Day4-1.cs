@@ -17,16 +17,20 @@ namespace aoc23.Puzzles._2023
 
         public IPuzzel Run()
         {
-            
+            var scratchcards = new List<Scratchcard>();
+
             try
             {
                 for (var i = 0; i < Input.Length; i++)
                 {
-                    
+                    var input = Input[i];
+
+                    scratchcards.Add(new Scratchcard().ParsInput(input).CalculatePoints());
                 }
 
+                var cardWithPoints = scratchcards.Where(x => x.HasPoints == true).ToList();
 
-                Answer = "N/A";
+                Answer = cardWithPoints.Sum(x=>x.Points).ToString();
             }
             catch (Exception ex)
             {
@@ -37,4 +41,5 @@ namespace aoc23.Puzzles._2023
             return this;
         }
     }
+
 }
