@@ -17,6 +17,8 @@ namespace aoc23.Puzzles._2023
 
         public IPuzzel Run()
         {
+            // Scratchcard class is defined in Day4-2.cs
+
             var scratchcards = new List<Scratchcard>();
 
             try

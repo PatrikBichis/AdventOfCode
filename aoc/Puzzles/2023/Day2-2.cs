@@ -64,8 +64,6 @@ namespace aoc23.Puzzles._2023
                     revealse.Add(r);
                 }
 
-                //revealse.ForEach(x => x.Validate());
-
                 var posibleGames = revealse.Where(x => x.Possible).ToList();
 
                 Answer = posibleGames.Sum(x => x.PowerValue).ToString();
@@ -103,19 +101,9 @@ namespace aoc23.Puzzles._2023
                 Blue = blue;
                 Green = green;
 
-                //if (red > 0 && red <= 12 && green > 0 && green <= 13 && blue > 0 && blue <= 14)
-                //{
-                    
-                    
-
-                //    Possible = true;
-                //}
-
                 var parts = GameId.Split(' ');
 
                 Id = int.Parse(parts[1].Trim());
-
-                //Reset();
 
                 return Possible;
             }

@@ -1,4 +1,5 @@
 ﻿using aoc2020;
+using aoc.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
@@ -18,17 +19,11 @@ namespace aoc23.Puzzles._2023
         public IPuzzel Run()
         {
             var scratchcards = new List<Scratchcard>();
-            var scratchcardInstances = 0;
             var totalAmountOfScratchcards = Input.Length;
 
             try
             {
-                for (var i = 0; i < Input.Length; i++)
-                {
-                    var input = Input[i];
-
-                    scratchcards.Add(new Scratchcard().ParsInput(input).CalculateMatches());
-                }
+                Input.ToList().ForEach(input => scratchcards.Add(new Scratchcard().ParsInput(input).CalculateMatches()));
 
                 scratchcards.ForEach(x => x.CalculateNrOfInstances(scratchcards, totalAmountOfScratchcards));
              
@@ -60,29 +55,11 @@ namespace aoc23.Puzzles._2023
 
         public Scratchcard ParsInput(string input)
         {
-            var parts = input.Split(':');
+            Card = input.Before(':');
+            Id = input.Before(':').AfterWithSpace();
 
-            Card = parts[0];
-
-            var numberStart = parts[0].LastIndexOf(" ");
-
-            Id = int.Parse(parts[0].Substring(numberStart, parts[0].Length - numberStart));
-
-
-            // Numbers
-            var numberParts = parts[1].Split("|");
-
-            foreach (var n in numberParts[0].Trim().Split(' '))
-            {
-                if (n != "")
-                    WinningNumbers.Add(int.Parse(n.Trim()));
-            }
-
-            foreach (var n in numberParts[1].Trim().Split(' '))
-            {
-                if (n != "")
-                    Numbers.Add(int.Parse(n.Trim()));
-            }
+            WinningNumbers = input.After(':').Before('|').ValuesSeparatedBy(' ');
+            Numbers = input.After(':').After('|').ValuesSeparatedBy(' ');
 
             return this;
         }
