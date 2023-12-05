@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace aoc23.Puzzles._2023
         public IPuzzel Run()
         {
 
-            var seedsValues = new List<int>();
+            var seedsValues = new List<double>();
             var seedToSoilMap = new List<MapItem>();
             var soilToFertilizerMap = new List<MapItem>();
             var fertilizerToWaterMap = new List<MapItem>();
@@ -32,38 +33,102 @@ namespace aoc23.Puzzles._2023
             
             try
             {
-                var lastCat = "";
+                var currentCat = "";
 
                 for (var i = 0; i < Input.Length; i++)
                 {
                     var input = Input[i];
 
-                    if (input.Before(':').Trim() == "seeds" && lastCat == "") {
-                        seedsValues = input.After(':').ValuesSeparatedBy(' ');
-                    }
-                    else if (input.Before(':').Trim() == "soil-to-fertilizer map" || lastCat == "soil-to-fertilizer map")
+                    Console.WriteLine("Line "+(i+1)+": " + Input[i]);
+
+                    if (input != "")
                     {
-                        lastCat = "soil-to-fertilizer map";
-                        var mapValues = input.ValuesSeparatedBy(' ');
-
-                        var destinationRangeStart = mapValues[0];
-                        var sourceRangeStart = mapValues[1];
-                        var RangeLength = mapValues[2];
-
-                        for(int j = 0; j < RangeLength; j++)
+                        if (input.Contains("seeds"))
                         {
-                            seedToSoilMap.Add(new MapItem { source = destinationRangeStart + j, target = sourceRangeStart + j });
+                            currentCat = "seeds";
+                        }
+
+                        if (currentCat == "seeds")
+                        {
+                            seedsValues = input.After(':').DoubleValuesSeparatedBy(' ');
+                        }
+                        else if (currentCat == "seed-to-soil map")
+                        {
+                            seedToSoilMap = ExtractValuesToMap(input, seedToSoilMap);
+                        }
+                        else if (currentCat == "soil-to-fertilizer map")
+                        {
+                            soilToFertilizerMap = ExtractValuesToMap(input, soilToFertilizerMap);
+                        }
+                        else if (currentCat == "fertilizer-to-water map")
+                        {
+                            fertilizerToWaterMap = ExtractValuesToMap(input, fertilizerToWaterMap);
+                        }
+                        else if (currentCat == "water-to-light map")
+                        {
+                            waterToLightMap = ExtractValuesToMap(input, waterToLightMap);
+                        }
+                        else if (currentCat == "light-to-temperature map")
+                        {
+                            lightToTemperatureMap = ExtractValuesToMap(input, lightToTemperatureMap);
+                        }
+                        else if (currentCat == "temperature-to-humidity map")
+                        {
+                            temperatureToHumidityMap = ExtractValuesToMap(input, temperatureToHumidityMap);
+                        }
+                        else if (currentCat == "humidity-to-location map")
+                        {
+                            humidityToLocationMap = ExtractValuesToMap(input, humidityToLocationMap);
+                        }
+
+                        if (input.Contains("seed-to-soil map"))
+                        {
+                            currentCat = "seed-to-soil map";
+                        }
+                        if (input.Contains("soil-to-fertilizer map"))
+                        {
+                            currentCat = "soil-to-fertilizer map";
+                        }
+                        if (input.Contains("fertilizer-to-water map"))
+                        {
+                            currentCat = "fertilizer-to-water map";
+                        }
+                        if (input.Contains("water-to-light map"))
+                        {
+                            currentCat = "water-to-light map";
+                        }
+                        if (input.Contains("light-to-temperature map"))
+                        {
+                            currentCat = "light-to-temperature map";
+                        }
+                        if (input.Contains("temperature-to-humidity map"))
+                        {
+                            currentCat = "temperature-to-humidity map";
+                        }
+                        if (input.Contains("humidity-to-location map"))
+                        {
+                            currentCat = "humidity-to-location map";
                         }
                     }
+                    else currentCat = "";
                 }
 
+                Console.WriteLine("Generating seeds");
                 seedsValues.ForEach(value => seeds.Add(new Seed(value)));
 
+                Console.WriteLine("Extracting data from maps");
                 seeds.ForEach(seed => seed.ExtractDataFromMaps(
-                    seedToSoilMap)
-                );
+                    seedToSoilMap,
+                    soilToFertilizerMap,
+                    fertilizerToWaterMap,
+                    waterToLightMap,
+                    lightToTemperatureMap,
+                    temperatureToHumidityMap,
+                    humidityToLocationMap
+                ));
 
-                Answer = "N/A";
+                Console.WriteLine("Get min location");
+                Answer = seeds.Min(x=>x.Location).ToString();
             }
             catch (Exception ex)
             {
@@ -74,44 +139,77 @@ namespace aoc23.Puzzles._2023
             return this;
         }
 
+        public List<MapItem> ExtractValuesToMap(string valueString, List<MapItem> map)
+        {
+            var mapValues = valueString.DoubleValuesSeparatedBy(' ');
+
+            var destinationRangeStart = mapValues[0];
+            var sourceRangeStart = mapValues[1];
+            var RangeLength = mapValues[2];
+
+            map.Add(new MapItem { source = sourceRangeStart, target = destinationRangeStart,  range = RangeLength });
+
+            return map;
+        } 
+
         public class MapItem
         {
-            public int source = 0;
 
-            public int target = 0;
+            public double source = 0;
+
+            public double target = 0;
+
+            public double range = 0;
         }
 
         public class Seed
         {
-            public int SeedValue = 0;
+            public double SeedValue = 0;
 
-            public int Soil = 0;
+            public double Soil = 0;
 
-            public int Fertilizer = 0;
+            public double Fertilizer = 0;
 
-            public int Water = 0;
+            public double Water = 0;
 
-            public int Light = 0;
+            public double Light = 0;
 
-            public int Temperature = 0;
+            public double Temperature = 0;
 
-            public int Humidity = 0;
+            public double Humidity = 0;
 
-            public int Location = 0;
+            public double Location = 0;
 
-            public Seed(int value)
+            public Seed(double value)
             {
                 SeedValue = value;
             }
 
+            private double ExtractValueFromMap(double sourceValue, List<MapItem> map) {
+                var foundMap = map.FirstOrDefault(x => sourceValue >= x.source && sourceValue <= (x.source + x.range));
+                if (foundMap != null) 
+                    return sourceValue + (foundMap.target - foundMap.source);
+                else 
+                    return sourceValue;
+            }
 
             public void ExtractDataFromMaps(
-                List<MapItem> seedToSoilMap
+                List<MapItem> seedToSoilMap,
+                List<MapItem> soilToFertilizerMap,
+                List<MapItem> fertilizerToWaterMap,
+                List<MapItem> waterToLightMap,
+                List<MapItem> lightToTemperatureMap,
+                List<MapItem> temperatureToHumidityMap,
+                List<MapItem> humidityToLocationMap
             )
             {
-                var soil = seedToSoilMap.FirstOrDefault(x => x.source == SeedValue);
-                if (soil == null) Soil = soil.target;
-                else Soil = SeedValue;
+                Soil = ExtractValueFromMap(SeedValue, seedToSoilMap);
+                Fertilizer = ExtractValueFromMap(Soil, soilToFertilizerMap);
+                Water = ExtractValueFromMap(Fertilizer, fertilizerToWaterMap);
+                Light = ExtractValueFromMap(Water, waterToLightMap);
+                Temperature = ExtractValueFromMap(Light, lightToTemperatureMap);
+                Humidity = ExtractValueFromMap(Temperature, temperatureToHumidityMap);
+                Location = ExtractValueFromMap(Humidity, humidityToLocationMap);
             }
         }
     }

@@ -52,5 +52,18 @@ namespace aoc.Helpers
 
             return values;
         }
+
+        public static List<double> DoubleValuesSeparatedBy(this string source, char separator)
+        {
+            var values = new List<double>();
+
+            foreach (var n in source.Trim().Split(separator))
+            {
+                if (n != "")
+                    values.Add(double.Parse(n.Trim()));
+            }
+
+            return values;
+        }
     }
 }
