@@ -114,8 +114,7 @@ namespace aoc23.Puzzles._2023
                 }
 
                 Console.WriteLine("Generating pars");
-                //seedsValues.ForEach(value => seeds.Add(new Seed(value)));
-                var lowestLocation = double.MaxValue;
+
                 var pars = new List<Tuple<double, double>>();
                 for (int j = 0; j < seedsValues.Count; j += 2)
                 {
@@ -123,6 +122,8 @@ namespace aoc23.Puzzles._2023
                 }
 
                 Console.WriteLine("Generating seeds");
+
+                var lowestLocation = double.MaxValue;
 
                 Parallel.ForEach(pars, p =>
                 {
@@ -145,42 +146,9 @@ namespace aoc23.Puzzles._2023
                         Console.WriteLine($"Seed {p.Item1} : {lowestLocation} : {(p.Item1 + p.Item2)}/{d}");
                     });
                 });
-               
 
-                //for (int j = 0; j < seedsValues.Count; j += 2)
-                //{
-                //    Console.WriteLine($"Range: {seedsValues.Count}/{j}");
-                //    for (double d = seedsValues[j]; d < (seedsValues[j] + seedsValues[j + 1]); d++)
-                //    {
-                //        Console.WriteLine($"Seed: {(seedsValues[j] + seedsValues[j + 1])}/{d}");
-                //        var location = new Seed(d).ExtractDataFromMaps(
-                //                        seedToSoilMap,
-                //                        soilToFertilizerMap,
-                //                        fertilizerToWaterMap,
-                //                        waterToLightMap,
-                //                        lightToTemperatureMap,
-                //                        temperatureToHumidityMap,
-                //                        humidityToLocationMap
-                //                    );
+                Console.WriteLine("Get min location" + Environment.NewLine);
 
-                //        if (location < lowestLocation)
-                //            lowestLocation = location;
-                //    }
-                //}
-                //Console.WriteLine("Handled all inputet seed ranges");
-
-                //Console.WriteLine("Extracting data from maps");
-                //seeds.ForEach(seed => seed.ExtractDataFromMaps(
-                //    seedToSoilMap,
-                //    soilToFertilizerMap,
-                //    fertilizerToWaterMap,
-                //    waterToLightMap,
-                //    lightToTemperatureMap,
-                //    temperatureToHumidityMap,
-                //    humidityToLocationMap
-                //));
-
-                //Console.WriteLine("Get min location");
                 Answer = lowestLocation.ToString();
             }
             catch (Exception ex)
