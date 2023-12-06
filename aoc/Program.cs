@@ -15,8 +15,8 @@ namespace aoc2020
             //new aoc23.Puzzles._2022.Day1_2(InputType.TestInput).Run().Print();
             //new aoc23.Puzzles._2022.Day1_2(InputType.Input).Run().Print();
 
-            //new aoc23.Puzzles._2023.Day6_1(InputType.TestInput).Run().Print();
-            //new aoc23.Puzzles._2023.Day6_1(InputType.Input).Run().Print();
+            new aoc23.Puzzles._2023.Day6_1(InputType.TestInput).Run().Print();
+            new aoc23.Puzzles._2023.Day6_1(InputType.Input).Run().Print();
             //new aoc23.Puzzles._2023.Day6_2(InputType.TestInput).Run().Print();
             //new aoc23.Puzzles._2023.Day6_2(InputType.Input).Run().Print();
 

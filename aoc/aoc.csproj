@@ -178,6 +178,9 @@
     <None Update="Input\2020\9-test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Input\2023\7-input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Input\2023\6-input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -188,6 +191,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Input\2023\3-input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Input\2023\7-test.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Input\2023\6-test.txt">
